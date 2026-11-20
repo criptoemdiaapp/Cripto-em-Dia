@@ -63,7 +63,7 @@ def cta_planilha(depth: int) -> str:
 def page(title, description, body, path_out: str, depth: int, canonical: str, extra_head="", kind="website"):
     r = rel(depth)
     nav = (f'<a href="{r}">Início</a><a href="{r}calculadora-ir-cripto/">Calculadora</a>'
-           f'<a href="{r}guias/">Guias</a><a href="{r}boletim/">Boletim</a>'
+           f'<a href="{r}mercado/">Mercado</a><a href="{r}boletim/">Notícias</a><a href="{r}guias/">Guias</a>'
            f'<a href="{r}planilha/" class="nav-cta">Planilha</a>')
     full_title = title if title.startswith(CFG["name"]) else f"{title} | {CFG['name']}"
     html = f"""<!DOCTYPE html>
@@ -98,7 +98,7 @@ def page(title, description, body, path_out: str, depth: int, canonical: str, ex
 {body}
 </main>
 <footer class="foot"><div class="wrap">
-<p><strong>Cripto em Dia</strong> — imposto de renda de criptomoedas explicado sem juridiquês.</p>
+<p><strong>Cripto em Dia</strong> — notícias de criptomoedas e imposto de renda, explicados sem juridiquês.</p>
 <p class="small">Conteúdo informativo, não é consultoria tributária, contábil ou de investimentos. Regras podem mudar: confira sempre a fonte oficial e, em caso de dúvida, fale com um contador.</p>
 <p class="small"><a href="{r}sobre/">Sobre</a> · <a href="{r}aviso-legal/">Aviso legal</a> · <a href="{r}privacidade/">Privacidade</a> · <a href="{r}boletim/feed.xml">RSS</a></p>
 </div></footer>
@@ -126,8 +126,10 @@ def main():
         m = re.match(r"(\d{4}-\d{2}-\d{2})-(.+)\.md$", p.name)
         d = datetime.strptime(m.group(1), "%Y-%m-%d").date()
         slug = f"{m.group(1)}-{m.group(2)}"
-        posts.append({"d": d, "slug": slug, "title": meta.get("title", slug),
+        posts.append({"d": d, "slug": slug, "title": meta.get("title", slug), "ed": meta.get("edicao", ""),
                       "description": meta.get("description", ""), "html": html})
+    _rank = {"": 0, "Manhã": 1, "Noite": 2}
+    posts.sort(key=lambda p: (p["d"], _rank.get(p["ed"], 0)), reverse=True)
     for i, post in enumerate(posts):
         canon = f"{BASE}/boletim/{post['slug']}/"
         ld = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": post["title"],
@@ -135,20 +137,21 @@ def main():
               "publisher": {"@type": "Organization", "name": CFG["name"]}}
         nav = ""
         if i + 1 < len(posts):
-            nav += f'<a href="../{posts[i+1]["slug"]}/">← Boletim anterior</a>'
+            nav += f'<a href="../{posts[i+1]["slug"]}/">← Edição anterior</a>'
         if i > 0:
-            nav += f'<a href="../{posts[i-1]["slug"]}/">Próximo boletim →</a>'
-        body = (f'<article class="prose"><p class="kicker">Boletim · {data_br(post["d"])}</p>'
+            nav += f'<a href="../{posts[i-1]["slug"]}/">Próxima edição →</a>'
+        ed = f' · edição da {post["ed"].lower()}' if post["ed"] else ""
+        body = (f'<article class="prose"><p class="kicker">Notícias · {data_br(post["d"])}{ed}</p>'
                 f'<h1>{escape(post["title"])}</h1>{post["html"]}</article>'
                 f'<div class="post-nav">{nav}</div>{cta_planilha(2)}{ad_slot(2)}')
         page(post["title"], post["description"], body, f"boletim/{post['slug']}/index.html", 2, canon,
              f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>', "article")
         urls.append((canon, post["d"].isoformat()))
     items = "".join(
-        f'<li><a href="{p["slug"]}/"><span class="date">{p["d"].strftime("%d/%m/%Y")}</span>'
+        f'<li><a href="{p["slug"]}/"><span class="date">{p["d"].strftime("%d/%m/%Y")}{(" · " + p["ed"]) if p["ed"] else ""}</span>'
         f'<strong>{escape(p["title"])}</strong><span>{escape(p["description"])}</span></a></li>' for p in posts)
-    page("Boletim diário", "Boletim diário do Cripto em Dia: o que mudou nas regras e no mercado de criptomoedas e o que isso muda no seu imposto.",
-         f'<section class="prose"><h1>Boletim diário</h1><p>Um resumo curto, todos os dias, do que mudou nas regras e no mercado e do que isso muda para quem declara cripto.</p></section><ul class="list">{items}</ul>',
+    page("Notícias de criptomoedas", "Notícias de Bitcoin, Ethereum e criptomoedas em geral, duas vezes por dia, com o que muda no seu imposto de renda.",
+         f'<section class="prose"><h1>Notícias de criptomoedas</h1><p>Duas edições por dia, de manhã e à noite: o mercado em um minuto, as principais notícias de Bitcoin, Ethereum e outras criptomoedas, e o que muda para quem declara cripto. Para preços ao vivo, veja a página <a href="../mercado/">Mercado</a>.</p></section><ul class="list">{items}</ul>',
          "boletim/index.html", 1, f"{BASE}/boletim/")
     urls.append((f"{BASE}/boletim/", posts[0]["d"].isoformat() if posts else date.today().isoformat()))
     rss_items = "".join(
@@ -156,7 +159,7 @@ def main():
         f"<guid>{BASE}/boletim/{p['slug']}/</guid><pubDate>{p['d'].strftime('%a, %d %b %Y 09:00:00 -0300')}</pubDate>"
         f"<description>{escape(p['description'])}</description></item>" for p in posts[:30])
     (OUT / "boletim" / "feed.xml").write_text(
-        f'<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Cripto em Dia — Boletim</title>'
+        f'<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Cripto em Dia — Notícias</title>'
         f"<link>{BASE}/boletim/</link><description>Boletim diário sobre imposto e regras de cripto no Brasil</description>"
         f"<language>pt-br</language>{rss_items}</channel></rss>", encoding="utf-8")
 
@@ -197,6 +200,9 @@ def main():
     kiwify = CFG.get("kiwify_checkout_url", "").strip()
     buy = (f'<a class="btn btn-big" href="{escape(kiwify)}" rel="nofollow">Comprar por R$ {CFG["preco"]} (Pix ou cartão)</a>'
            if kiwify else '<span class="btn btn-big btn-off">Disponível em breve</span>')
+    page("Mercado de criptomoedas hoje: preços em reais", "Preços ao vivo em reais das 20 maiores criptomoedas, variação em 24h e 7 dias, valor de mercado total, participação do Bitcoin e índice de medo e ganância.",
+         tpl("mercado.html") + ad_slot(1), "mercado/index.html", 1, f"{BASE}/mercado/")
+    urls.append((f"{BASE}/mercado/", date.today().isoformat()))
     page("Calculadora de IR de criptomoedas", "Calcule em segundos se suas vendas de cripto no mês são isentas, quanto de IR pagar e até quando vence o DARF.",
          tpl("calculadora.html") + cta_planilha(1) + ad_slot(1), "calculadora-ir-cripto/index.html", 1,
          f"{BASE}/calculadora-ir-cripto/")
@@ -208,7 +214,7 @@ def main():
 
     latest = "".join(
         f'<li><a href="boletim/{p["slug"]}/"><span class="date">{p["d"].strftime("%d/%m/%Y")}</span>'
-        f'<strong>{escape(p["title"])}</strong></a></li>' for p in posts[:5])
+        f'<strong>{escape(p["title"])}</strong></a></li>' for p in posts[:6])
     glist_home = "".join(f'<li><a href="{s}/"><strong>{escape(t)}</strong><span>{escape(d)}</span></a></li>'
                          for _, s, t, d in guias)
     home = (tpl("home.html").replace("{{BOLETINS}}", latest).replace("{{GUIAS}}", glist_home)

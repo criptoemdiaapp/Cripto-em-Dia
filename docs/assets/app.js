@@ -33,6 +33,42 @@
     setInterval(load, 120000);
   }
 
+
+  /* ---------------- página Mercado */
+  var mb = document.getElementById("market-body");
+  if (mb) {
+    var compact = new Intl.NumberFormat("pt-BR", { notation: "compact", maximumFractionDigits: 2 });
+    var pct = function (v) { if (v == null) return "–"; return "<span class='" + (v >= 0 ? "up" : "down") + "'>" + (v >= 0 ? "+" : "") + v.toFixed(2).replace(".", ",") + "%</span>"; };
+    var price = function (v) { return v >= 1 ? brl.format(v) : "R$ " + v.toLocaleString("pt-BR", { maximumSignificantDigits: 4 }); };
+    var loadMk = function () {
+      fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&order=market_cap_desc&per_page=20&page=1&price_change_percentage=24h,7d")
+        .then(function (r) { return r.json(); }).then(function (d) {
+          if (!Array.isArray(d)) throw 0;
+          mb.innerHTML = d.map(function (c) {
+            return "<tr><td>" + c.market_cap_rank + "</td><td><img src='" + c.image + "' alt='' loading='lazy'><strong>" + c.name + "</strong> <span class='small'>" + String(c.symbol).toUpperCase() + "</span></td>" +
+              "<td class='num'>" + price(c.current_price) + "</td><td class='num'>" + pct(c.price_change_percentage_24h_in_currency) + "</td><td class='num'>" + pct(c.price_change_percentage_7d_in_currency) + "</td>" +
+              "<td class='num'>R$ " + compact.format(c.market_cap) + "</td><td class='num'>R$ " + compact.format(c.total_volume) + "</td></tr>";
+          }).join("");
+          document.getElementById("market-time").textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+        }).catch(function () { mb.innerHTML = "<tr><td colspan='7'>Dados indisponíveis no momento. Tente recarregar em instantes.</td></tr>"; });
+      fetch("https://api.coingecko.com/api/v3/global").then(function (r) { return r.json(); }).then(function (g) {
+        g = g.data;
+        document.getElementById("g-mcap").textContent = "R$ " + compact.format(g.total_market_cap.brl);
+        var ch = g.market_cap_change_percentage_24h_usd;
+        document.getElementById("g-mcap-ch").innerHTML = pct(ch) + " em 24h";
+        document.getElementById("g-dom").textContent = g.market_cap_percentage.btc.toFixed(1).replace(".", ",") + "%";
+        document.getElementById("g-n").textContent = g.active_cryptocurrencies.toLocaleString("pt-BR");
+      }).catch(function () {});
+      fetch("https://api.alternative.me/fng/?limit=1").then(function (r) { return r.json(); }).then(function (f) {
+        var x = f.data[0], map = { "Extreme Fear": "Medo extremo", "Fear": "Medo", "Neutral": "Neutro", "Greed": "Ganância", "Extreme Greed": "Ganância extrema" };
+        document.getElementById("g-fng").textContent = x.value + "/100";
+        document.getElementById("g-fng-l").textContent = map[x.value_classification] || x.value_classification;
+      }).catch(function () {});
+    };
+    loadMk();
+    setInterval(loadMk, 120000);
+  }
+
   /* ---------------- calculadora */
   function num(id) {
     var el = document.getElementById(id);

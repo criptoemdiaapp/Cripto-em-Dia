@@ -99,3 +99,8 @@ section{margin:36px 0}
 .foot{background:#eef2ee;margin-top:60px;padding:28px 0;color:var(--muted);font-size:.95rem}
 .foot a{color:var(--green)}
 @media (max-width:700px){.top{position:static}.top .wrap{gap:6px;padding-top:6px;padding-bottom:6px}.logo img{height:46px}.top nav{flex-wrap:nowrap;overflow-x:auto;width:100%}.top nav a{padding:5px 8px;font-size:.9rem;white-space:nowrap}}
+.kpis-site{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:20px 0}
+.big-num{font-size:1.5rem;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;margin:2px 0}
+#market td{white-space:nowrap}
+#market img{width:20px;height:20px;vertical-align:-4px;margin-right:8px}
+.ed{display:inline-block;background:#e6f6ee;color:var(--navy);border-radius:999px;padding:1px 9px;font-size:.72rem;font-weight:700;margin-left:6px;vertical-align:1px}

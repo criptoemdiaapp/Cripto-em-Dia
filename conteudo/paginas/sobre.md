@@ -3,7 +3,7 @@ title: Sobre o Cripto em Dia
 slug: sobre
 description: O que é o Cripto em Dia, como o conteúdo é produzido e conferido.
 ---
-O **Cripto em Dia** explica o imposto de renda de criptomoedas no Brasil em linguagem simples, com ferramentas gratuitas (calculadora e cotações em reais) e um boletim diário.
+O **Cripto em Dia** traz notícias de criptomoedas duas vezes por dia e explica o imposto de renda de cripto no Brasil em linguagem simples, com ferramentas gratuitas: calculadora, preços ao vivo em reais e guias.
 
 ## Como o conteúdo é produzido
 
