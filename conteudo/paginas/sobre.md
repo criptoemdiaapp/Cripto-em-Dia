@@ -15,4 +15,4 @@ O site é gratuito. Ele se sustenta com a venda da [Planilha Cripto em Dia](../p
 
 ## Encontrou um erro?
 
-Regras tributárias mudam. Se você encontrou algo desatualizado, avise pelo e-mail informado na página da planilha.
+Regras tributárias mudam. Se você encontrou algo desatualizado, avise {{CONTATO}}.

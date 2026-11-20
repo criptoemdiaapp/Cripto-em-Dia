@@ -9,4 +9,4 @@ description: Como o Cripto em Dia trata dados de visitantes.
 - **Publicidade:** se houver anúncios, eles podem ser servidos por redes de terceiros (como a A-ADS), que podem registrar dados técnicos como endereço IP e navegador, conforme as políticas delas.
 - **Hospedagem:** o site é hospedado no GitHub Pages, que pode registrar dados técnicos de acesso para segurança.
 
-Seus direitos sob a LGPD podem ser exercidos pelo e-mail informado na página da planilha.
+Seus direitos sob a LGPD (acesso, correção e exclusão de dados) podem ser exercidos {{CONTATO}}. O site não usa cookies próprios nem ferramentas de rastreamento.

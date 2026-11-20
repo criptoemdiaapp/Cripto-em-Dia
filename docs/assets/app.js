@@ -17,7 +17,8 @@
         tbody.innerHTML = coins.map(function (c) {
           var x = d[c[0]];
           if (!x) return "";
-          var ch = x.brl_24h_change || 0;
+          if (typeof x.brl !== "number") return "";
+          var ch = typeof x.brl_24h_change === "number" ? x.brl_24h_change : 0;
           var cls = ch >= 0 ? "up" : "down";
           return "<tr><td><strong>" + c[2] + "</strong> <span class='small'>" + c[1] + "</span></td>" +
             "<td class='num'>" + brl.format(x.brl) + "</td>" +
@@ -38,17 +39,35 @@
   var mb = document.getElementById("market-body");
   if (mb) {
     var compact = new Intl.NumberFormat("pt-BR", { notation: "compact", maximumFractionDigits: 2 });
-    var pct = function (v) { if (v == null) return "–"; return "<span class='" + (v >= 0 ? "up" : "down") + "'>" + (v >= 0 ? "+" : "") + v.toFixed(2).replace(".", ",") + "%</span>"; };
+    var pct = function (v) { if (typeof v !== "number" || !isFinite(v)) return "–"; return "<span class='" + (v >= 0 ? "up" : "down") + "'>" + (v >= 0 ? "+" : "") + v.toFixed(2).replace(".", ",") + "%</span>"; };
     var price = function (v) { return v >= 1 ? brl.format(v) : "R$ " + v.toLocaleString("pt-BR", { maximumSignificantDigits: 4 }); };
     var loadMk = function () {
       fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&order=market_cap_desc&per_page=20&page=1&price_change_percentage=24h,7d")
         .then(function (r) { return r.json(); }).then(function (d) {
           if (!Array.isArray(d)) throw 0;
-          mb.innerHTML = d.map(function (c) {
-            return "<tr><td>" + c.market_cap_rank + "</td><td><img src='" + c.image + "' alt='' loading='lazy'><strong>" + c.name + "</strong> <span class='small'>" + String(c.symbol).toUpperCase() + "</span></td>" +
-              "<td class='num'>" + price(c.current_price) + "</td><td class='num'>" + pct(c.price_change_percentage_24h_in_currency) + "</td><td class='num'>" + pct(c.price_change_percentage_7d_in_currency) + "</td>" +
-              "<td class='num'>R$ " + compact.format(c.market_cap) + "</td><td class='num'>R$ " + compact.format(c.total_volume) + "</td></tr>";
-          }).join("");
+          var frag = document.createDocumentFragment();
+          d.forEach(function (c) {
+            var tr = document.createElement("tr");
+            var td = function (content, cls) { var x = document.createElement("td"); if (cls) x.className = cls; if (content instanceof Node) x.appendChild(content); else x.textContent = content; tr.appendChild(x); return x; };
+            var pctNode = function (v) { var sp = document.createElement("span"); if (typeof v !== "number" || !isFinite(v)) { sp.textContent = "–"; return sp; } sp.className = v >= 0 ? "up" : "down"; sp.textContent = (v >= 0 ? "+" : "") + v.toFixed(2).replace(".", ",") + "%"; return sp; };
+            var num = function (v) { return typeof v === "number" && isFinite(v) ? v : 0; };
+            td(String(num(c.market_cap_rank) || "–"));
+            var nameCell = document.createElement("span");
+            if (typeof c.image === "string" && /^https:\/\/[a-z0-9.-]*coingecko\.com\//i.test(c.image)) {
+              var img = document.createElement("img"); img.src = c.image; img.alt = ""; img.loading = "lazy"; img.referrerPolicy = "no-referrer"; nameCell.appendChild(img);
+            }
+            var strong = document.createElement("strong"); strong.textContent = String(c.name || "").slice(0, 40); nameCell.appendChild(strong);
+            var sym = document.createElement("span"); sym.className = "small"; sym.textContent = " " + String(c.symbol || "").toUpperCase().slice(0, 12); nameCell.appendChild(sym);
+            td(nameCell);
+            td(price(num(c.current_price)), "num");
+            td(pctNode(c.price_change_percentage_24h_in_currency), "num");
+            td(pctNode(c.price_change_percentage_7d_in_currency), "num");
+            td("R$ " + compact.format(num(c.market_cap)), "num");
+            td("R$ " + compact.format(num(c.total_volume)), "num");
+            frag.appendChild(tr);
+          });
+          mb.textContent = "";
+          mb.appendChild(frag);
           document.getElementById("market-time").textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
         }).catch(function () { mb.innerHTML = "<tr><td colspan='7'>Dados indisponíveis no momento. Tente recarregar em instantes.</td></tr>"; });
       fetch("https://api.coingecko.com/api/v3/global").then(function (r) { return r.json(); }).then(function (g) {
