@@ -54,10 +54,10 @@ def ad_slot(depth: int) -> str:
 
 
 def cta_planilha(depth: int) -> str:
-    return (f'<aside class="cta"><div><strong>Planilha Cripto em Dia</strong>'
-            f'<p>Lance suas compras e vendas e ela calcula custo médio, isenção de R$ 35 mil, IR e DARF do mês, '
+    return (f'<aside class="cta"><div><strong>App + Planilha Cripto em Dia</strong>'
+            f'<p>Lance suas compras e vendas e veja na hora: custo médio, isenção de R$ 35 mil, IR e DARF do mês, '
             f'imposto do exterior e o que lançar em Bens e Direitos.</p></div>'
-            f'<a class="btn" href="{rel(depth)}planilha/">Conhecer a planilha</a></aside>')
+            f'<a class="btn" href="{rel(depth)}planilha/">Conhecer o pacote</a></aside>')
 
 
 def page(title, description, body, path_out: str, depth: int, canonical: str, extra_head="", kind="website"):
@@ -201,7 +201,7 @@ def main():
          tpl("calculadora.html") + cta_planilha(1) + ad_slot(1), "calculadora-ir-cripto/index.html", 1,
          f"{BASE}/calculadora-ir-cripto/")
     urls.append((f"{BASE}/calculadora-ir-cripto/", date.today().isoformat()))
-    page("Planilha de IR para criptomoedas", "Planilha para controlar compras e vendas de cripto e calcular custo médio, isenção, IR mensal, DARF, exterior (Lei 14.754) e Bens e Direitos.",
+    page("App e planilha de IR para criptomoedas", "App e planilha para controlar compras e vendas de cripto e calcular custo médio, isenção, IR mensal, DARF, exterior (Lei 14.754) e Bens e Direitos.",
          tpl("planilha.html").replace("{{BOTAO}}", buy).replace("{{PRECO}}", CFG["preco"]),
          "planilha/index.html", 1, f"{BASE}/planilha/")
     urls.append((f"{BASE}/planilha/", date.today().isoformat()))
