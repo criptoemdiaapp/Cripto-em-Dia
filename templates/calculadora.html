@@ -1,0 +1,38 @@
+<section class="grid2" id="calculadora">
+  <div class="card calc">
+    <h2 style="margin-top:0">Calculadora: vendas no Brasil</h2>
+    <p class="small">Corretoras com sede no Brasil, carteira própria ou P2P. Regra mensal com isenção de R$ 35 mil.</p>
+    <form id="calc" autocomplete="off">
+      <label for="c-mes">Mês das vendas</label>
+      <input id="c-mes" type="month">
+      <label for="c-vendido">Total vendido no mês (R$)</label>
+      <input id="c-vendido" inputmode="decimal" placeholder="ex.: 40.000">
+      <div class="hint">Some todas as criptos vendidas no mês, de todos os tipos.</div>
+      <div class="row">
+        <div>
+          <label for="c-custo">Custo de aquisição do que vendeu (R$)</label>
+          <input id="c-custo" inputmode="decimal" placeholder="ex.: 30.000">
+        </div>
+        <div>
+          <label for="c-taxas">Taxas de venda (R$)</label>
+          <input id="c-taxas" inputmode="decimal" placeholder="ex.: 50">
+        </div>
+      </div>
+      <div class="hint">Custo de aquisição = quantidade vendida × seu custo médio de compra.</div>
+      <div id="c-out" class="result">Preencha os campos para ver o resultado.</div>
+    </form>
+  </div>
+  <div class="card calc">
+    <h2 style="margin-top:0">Corretora estrangeira</h2>
+    <p class="small">Plataformas com sede fora do Brasil seguem a Lei 14.754/2023: 15% sobre o resultado do ano, sem isenção mensal.</p>
+    <form id="calc-ext" autocomplete="off">
+      <label for="e-lucro">Resultado das vendas no ano (R$)</label>
+      <input id="e-lucro" inputmode="decimal" placeholder="ex.: 12.000">
+      <div class="hint">Lucros menos prejuízos das vendas feitas no ano.</div>
+      <label for="e-prej">Prejuízo de anos anteriores a compensar (R$)</label>
+      <input id="e-prej" inputmode="decimal" placeholder="ex.: 0">
+      <div id="e-out" class="result">Preencha para estimar.</div>
+    </form>
+    <p class="small">Resultado estimado e informativo. Não substitui um contador.</p>
+  </div>
+</section>

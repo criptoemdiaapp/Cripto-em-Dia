@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cripto em Dia — Imposto de renda de criptomoedas sem susto</title>
+<meta name="description" content="Calculadora de IR de cripto, cotações em reais, guias sobre isenção de R$ 35 mil, DeCripto e corretoras estrangeiras, e boletim diário.">
+<link rel="canonical" href="https://criptoemdiaapp.github.io/Cripto-em-Dia/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cripto em Dia — Imposto de renda de criptomoedas sem susto">
+<meta property="og:description" content="Calculadora de IR de cripto, cotações em reais, guias sobre isenção de R$ 35 mil, DeCripto e corretoras estrangeiras, e boletim diário.">
+<meta property="og:url" content="https://criptoemdiaapp.github.io/Cripto-em-Dia/">
+<meta property="og:locale" content="pt_BR">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f3d2e'/><text x='16' y='22' font-size='16' text-anchor='middle' fill='%23f4c95d' font-family='Arial' font-weight='700'>R$</text></svg>">
+<link rel="stylesheet" href="./assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Cripto em Dia", "url": "https://criptoemdiaapp.github.io/Cripto-em-Dia/", "inLanguage": "pt-BR"}</script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+<a class="logo" href="./"><span class="logo-mark">R$</span> Cripto em Dia</a>
+<nav><a href="./">Início</a><a href="./calculadora-ir-cripto/">Calculadora</a><a href="./guias/">Guias</a><a href="./boletim/">Boletim</a><a href="./planilha/" class="nav-cta">Planilha</a></nav>
+</div></header>
+<main class="wrap">
+<section class="hero">
+  <div>
+    <p class="kicker">Imposto de renda de criptomoedas</p>
+    <h1>Venda, declare e durma tranquilo.</h1>
+    <p class="lead">Descubra em segundos se suas vendas de cripto são isentas, quanto pagar de DARF e o que lançar na declaração. Em português claro, com a fonte de cada regra.</p>
+    <div class="badges">
+      <span class="badge">Isenção de R$ 35 mil/mês</span>
+      <span class="badge">DeCripto</span>
+      <span class="badge">Lei 14.754 (exterior)</span>
+      <span class="badge">IRPF 2027</span>
+    </div>
+    <p style="margin-top:22px"><a class="btn" href="#calculadora">Usar a calculadora</a></p>
+  </div>
+  <div class="card prices">
+    <h2 style="margin-top:0;font-size:1.2rem">Cotações em reais</h2>
+    <table>
+      <thead><tr><th>Ativo</th><th style="text-align:right">Preço</th><th style="text-align:right">24h</th></tr></thead>
+      <tbody id="prices-body"><tr><td colspan="3">Carregando…</td></tr></tbody>
+    </table>
+    <p class="src">Fonte: CoinGecko · atualizado às <span id="prices-time">—</span> · não é recomendação de investimento.</p>
+  </div>
+</section>
+
+<section class="grid2" id="calculadora">
+  <div class="card calc">
+    <h2 style="margin-top:0">Calculadora: vendas no Brasil</h2>
+    <p class="small">Corretoras com sede no Brasil, carteira própria ou P2P. Regra mensal com isenção de R$ 35 mil.</p>
+    <form id="calc" autocomplete="off">
+      <label for="c-mes">Mês das vendas</label>
+      <input id="c-mes" type="month">
+      <label for="c-vendido">Total vendido no mês (R$)</label>
+      <input id="c-vendido" inputmode="decimal" placeholder="ex.: 40.000">
+      <div class="hint">Some todas as criptos vendidas no mês, de todos os tipos.</div>
+      <div class="row">
+        <div>
+          <label for="c-custo">Custo de aquisição do que vendeu (R$)</label>
+          <input id="c-custo" inputmode="decimal" placeholder="ex.: 30.000">
+        </div>
+        <div>
+          <label for="c-taxas">Taxas de venda (R$)</label>
+          <input id="c-taxas" inputmode="decimal" placeholder="ex.: 50">
+        </div>
+      </div>
+      <div class="hint">Custo de aquisição = quantidade vendida × seu custo médio de compra.</div>
+      <div id="c-out" class="result">Preencha os campos para ver o resultado.</div>
+    </form>
+  </div>
+  <div class="card calc">
+    <h2 style="margin-top:0">Corretora estrangeira</h2>
+    <p class="small">Plataformas com sede fora do Brasil seguem a Lei 14.754/2023: 15% sobre o resultado do ano, sem isenção mensal.</p>
+    <form id="calc-ext" autocomplete="off">
+      <label for="e-lucro">Resultado das vendas no ano (R$)</label>
+      <input id="e-lucro" inputmode="decimal" placeholder="ex.: 12.000">
+      <div class="hint">Lucros menos prejuízos das vendas feitas no ano.</div>
+      <label for="e-prej">Prejuízo de anos anteriores a compensar (R$)</label>
+      <input id="e-prej" inputmode="decimal" placeholder="ex.: 0">
+      <div id="e-out" class="result">Preencha para estimar.</div>
+    </form>
+    <p class="small">Resultado estimado e informativo. Não substitui um contador.</p>
+  </div>
+</section>
+
+
+<aside class="cta"><div><strong>Planilha Cripto em Dia</strong><p>Lance suas compras e vendas e ela calcula custo médio, isenção de R$ 35 mil, IR e DARF do mês, imposto do exterior e o que lançar em Bens e Direitos.</p></div><a class="btn" href="./planilha/">Conhecer a planilha</a></aside>
+
+<section class="grid2">
+  <div>
+    <h2>Guias essenciais</h2>
+    <ul class="list"><li><a href="guias/isencao-35-mil/"><strong>Isenção de R$ 35 mil em cripto: como funciona de verdade</strong><span>O limite de R$ 35 mil é sobre o total vendido no mês, não sobre o lucro. Veja quem tem direito, o que conta e o que muda para corretoras estrangeiras.</span></a></li><li><a href="guias/decripto/"><strong>DeCripto: quem precisa entregar e como evitar multa</strong><span>A DeCripto substituiu a IN 1.888 em julho de 2026. Veja quando a pessoa física é obrigada a declarar, o prazo mensal e o que muda com as corretoras estrangeiras.</span></a></li><li><a href="guias/exchange-estrangeira-lei-14754/"><strong>Corretora estrangeira e a Lei 14.754: 15% sem isenção</strong><span>Cripto em corretora com sede fora do Brasil segue regra própria desde 2024: 15% sobre o resultado anual, sem a isenção de R$ 35 mil. Entenda a diferença.</span></a></li><li><a href="guias/como-declarar-cripto-ir/"><strong>Como declarar criptomoedas no Imposto de Renda, passo a passo</strong><span>Quem é obrigado, em qual ficha lançar, quais códigos usar e por que o valor é sempre o custo de aquisição. Guia para a declaração de 2027 (ano-base 2026).</span></a></li></ul>
+  </div>
+  <div>
+    <h2>Boletim diário</h2>
+    <ul class="list"><li><a href="boletim/2026-11-19-regras-que-valem-para-o-ir-2027/"><span class="date">19/11/2026</span><strong>As regras que valem para o IR 2027 de quem tem cripto</strong></a></li></ul>
+    <p><a href="boletim/">Ver todos os boletins →</a></p>
+  </div>
+</section>
+
+
+
+</main>
+<footer class="foot"><div class="wrap">
+<p><strong>Cripto em Dia</strong> — imposto de renda de criptomoedas explicado sem juridiquês.</p>
+<p class="small">Conteúdo informativo, não é consultoria tributária, contábil ou de investimentos. Regras podem mudar: confira sempre a fonte oficial e, em caso de dúvida, fale com um contador.</p>
+<p class="small"><a href="./sobre/">Sobre</a> · <a href="./aviso-legal/">Aviso legal</a> · <a href="./privacidade/">Privacidade</a> · <a href="./boletim/feed.xml">RSS</a></p>
+</div></footer>
+<script src="./assets/app.js" defer></script>
+</body>
+</html>
