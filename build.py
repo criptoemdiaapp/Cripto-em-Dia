@@ -79,13 +79,19 @@ def page(title, description, body, path_out: str, depth: int, canonical: str, ex
 <meta property="og:description" content="{escape(description)}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:locale" content="pt_BR">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f3d2e'/><text x='16' y='22' font-size='16' text-anchor='middle' fill='%23f4c95d' font-family='Arial' font-weight='700'>R$</text></svg>">
+<link rel="icon" type="image/png" sizes="48x48" href="{r}assets/img/favicon-48.png">
+<link rel="apple-touch-icon" href="{r}assets/img/apple-touch-icon.png">
+<meta property="og:image" content="{BASE}/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0b1d3f">
 <link rel="stylesheet" href="{r}assets/style.css">
 {extra_head}
 </head>
 <body>
 <header class="top"><div class="wrap">
-<a class="logo" href="{r}"><span class="logo-mark">R$</span> Cripto em Dia</a>
+<a class="logo" href="{r}"><img src="{r}assets/img/logo.png" alt="Cripto em Dia" width="144" height="52"></a>
 <nav>{nav}</nav>
 </div></header>
 <main class="wrap">
